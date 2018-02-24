@@ -1,0 +1,12 @@
+docker run --name Abathur -p 3000:3000 -dt --mount type=bind,source=$HOME/dodo,target=/app python:2-slim
+docker exec Abathur apt-get upgrade -y
+docker exec Abathur apt-get update -y
+docker exec Abathur apt-get install python-pip
+docker exec Abathur pip install flask
+docker exec Abathur touch /root/hello_world.py
+docker exec Abathur bash -c "echo 'from flask import Flask' >> /root/hello_world.py"
+docker exec Abathur bash -c "echo 'app = Flask(__name__)' >> /root/hello_world.py"
+docker exec Abathur bash -c "echo \"@app.route('/')\" >> /root/hello_world.py"
+docker exec Abathur bash -c "echo 'def hello_world():' >> /root/hello_world.py"
+docker exec Abathur bash -c "echo -e \"\treturn '<h1>Hello World</h1>'\" >> /root/hello_world.py"
+docker exec Abathur bash -c "export FLASK_APP=/root/hello_world.py && flask run -h 0.0.0.0 -p 3000"
